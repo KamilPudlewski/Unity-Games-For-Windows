@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip shipExplosion;
 
     private AudioSource soundEffectAudio;
+    public float volume = 0.1f;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class SoundManager : MonoBehaviour
 
         AudioSource theSource = GetComponent<AudioSource>();
         soundEffectAudio = theSource;
+        theSource.volume = volume;
     }
 
     public void PlayOneShot(AudioClip clip)
