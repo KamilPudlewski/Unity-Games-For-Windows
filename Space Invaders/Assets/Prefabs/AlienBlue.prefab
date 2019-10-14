@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3092338544532916405}
   - component: {fileID: -6130602974174071583}
   m_Layer: 11
-  m_Name: AlienBlue1
+  m_Name: AlienBlue
   m_TagString: Alien
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,6 +153,6 @@ MonoBehaviour:
     type: 3}
   minFireRateTime: 1
   maxFireRateTime: 3
-  baseFireWaitTime: 3
+  baseFireWaitTime: 0
   explodedShipImage: {fileID: 8463096131581357343, guid: 1f539275e35f8374396ae96e09118554,
     type: 3}

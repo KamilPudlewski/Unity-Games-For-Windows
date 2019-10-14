@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AlienBullet : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class AlienBullet : MonoBehaviour
             collision.GetComponent<SpriteRenderer>().sprite = explodedSpaceShipImage;
             Destroy(gameObject);
             Object.Destroy(collision.gameObject, 0.5f);
+
+            var gameOver = GameObject.Find("GameOver").GetComponent<Text>();
+            gameOver.text = "Game Over! Press r to restart.";
         }
 
         if (collision.tag == "Shield")

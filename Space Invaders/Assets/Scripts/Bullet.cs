@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
             collision.GetComponent<SpriteRenderer>().sprite = explodedAlienImage;
             Destroy(gameObject);
 
-            Object.Destroy(collision.gameObject, 0.5f);
+            Object.Destroy(collision.gameObject, 0.18f);
         }
 
         if (collision.tag == "Shield")
