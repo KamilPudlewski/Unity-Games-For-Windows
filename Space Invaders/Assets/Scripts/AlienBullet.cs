@@ -7,7 +7,6 @@ public class AlienBullet : MonoBehaviour
 {
     public float speed = 30;
     private Rigidbody2D rigidBody;
-
     public Sprite explodedSpaceShipImage;
 
     void Start()

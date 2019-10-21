@@ -9,11 +9,13 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rigidBody;
 
     public Sprite explodedAlienImage;
+    private Score score;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.velocity = Vector2.up * speed;
+        score = GameObject.Find("Score").GetComponent<Score>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -26,7 +28,7 @@ public class Bullet : MonoBehaviour
         if (collision.tag == "Alien")
         {
             SoundManager.Instance.PlayOneShot(SoundManager.Instance.alienDies);
-            IncreaseTextUIScore();
+            score.IncreaseScore(10);
 
             collision.GetComponent<SpriteRenderer>().sprite = explodedAlienImage;
             Destroy(gameObject);
@@ -44,15 +46,5 @@ public class Bullet : MonoBehaviour
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
-    }
-
-    void IncreaseTextUIScore()
-    {
-        var textUIComp = GameObject.Find("Score").GetComponent<Text>();
-
-        int score = int.Parse(textUIComp.text);
-        score += 10;
-
-        textUIComp.text = score.ToString();
     }
 }

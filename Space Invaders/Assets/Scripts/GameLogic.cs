@@ -7,13 +7,26 @@ using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviour
 {
-    GameObject[] bullets;
-    GameObject[] aliens;
+    public static GameLogic instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Update()
     {
         if (Input.GetKeyDown("r"))
         {
+            DestroyBullets();
             RestartScene();
             DestroyBullets();
         }
@@ -27,25 +40,26 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    void RestartScene()
+    private void RestartScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void DestroyBullets()
+    private void DestroyBullets()
     {
+        GameObject[] bullets;
         bullets = GameObject.FindGameObjectsWithTag("AlienBullet");
 
         foreach (GameObject bullet in bullets)
         {
             Destroy(bullet);
         }
-        Debug.Log(bullets.Length);
     }
 
-    bool CheckOpponents()
+    private bool CheckOpponents()
     {
-        aliens = GameObject.FindGameObjectsWithTag("Alien");
+        GameObject[] aliens;
+        aliens = GameObject.FindGameObjectsWithTag("Alien" );
 
         if (aliens.Length != 1)
         {
@@ -57,15 +71,15 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    int GetScorePoints()
+    private int GetScorePoints()
     {
-        var score = GameObject.Find("Score").GetComponent<Text>();
-        return Int32.Parse(score.text);
+        Score score = GameObject.Find("Score").GetComponent<Score>();
+        return score.GetScore();
     }
 
-    void SetScorePoints(int points)
+    private void SetScorePoints(int points)
     {
-        var score = GameObject.Find("Score").GetComponent<Text>();
-        score.text = points.ToString();
+        Score score = GameObject.Find("Score").GetComponent<Score>();
+        score.SetScore(points);
     }
 }

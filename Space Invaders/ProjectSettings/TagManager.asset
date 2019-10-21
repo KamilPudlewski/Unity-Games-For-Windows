@@ -9,6 +9,7 @@ TagManager:
   - Alien
   - Shield
   - AlienBullet
+  - Score
   layers:
   - Default
   - TransparentFX
@@ -23,8 +24,8 @@ TagManager:
   - Bullet
   - Alien
   - Shield
-  - AlieBullet
-  - 
+  - AlienBullet
+  - Score
   - 
   - 
   - 
