@@ -7,15 +7,16 @@ using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviour
 {
-    public static GameLogic instance;
+    public static GameLogic Instance;
+    private int bulletClearStatus = 0;
 
-    private void Awake()
+    private void Start()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
@@ -24,25 +25,45 @@ public class GameLogic : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("r"))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            DestroyBullets();
-            RestartScene();
-            DestroyBullets();
+            Application.Quit();
         }
 
-        if (!CheckOpponents())
+        if (Input.GetKeyDown("r"))
         {
-            int score = GetScorePoints();
-            RestartScene();
-            DestroyBullets();
-            SetScorePoints(score);
+            gameReset();
         }
+
+        DestroyAlienBulletsAfterSceneRestart();
+        RestartAfterCompleteLevel();
+    }
+
+    public void gameReset()
+    {
+        RestartScene();
+        Score.Instance.ResetScore();
+        Score.Instance.GameOverTextReset();
+        bulletClearStatus++;
     }
 
     private void RestartScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void DestroyAlienBulletsAfterSceneRestart()
+    {
+        if (bulletClearStatus != 0)
+        {
+            DestroyBullets();
+            bulletClearStatus++;
+
+            if (bulletClearStatus == 100)
+            {
+                bulletClearStatus = 0;
+            }
+        }
     }
 
     private void DestroyBullets()
@@ -56,10 +77,19 @@ public class GameLogic : MonoBehaviour
         }
     }
 
+    private void RestartAfterCompleteLevel()
+    {
+        if (!CheckOpponents())
+        {
+            RestartScene();
+            bulletClearStatus++;
+        }
+    }
+
     private bool CheckOpponents()
     {
         GameObject[] aliens;
-        aliens = GameObject.FindGameObjectsWithTag("Alien" );
+        aliens = GameObject.FindGameObjectsWithTag("Alien");
 
         if (aliens.Length != 1)
         {
@@ -69,17 +99,5 @@ public class GameLogic : MonoBehaviour
         {
             return false;
         }
-    }
-
-    private int GetScorePoints()
-    {
-        Score score = GameObject.Find("Score").GetComponent<Score>();
-        return score.GetScore();
-    }
-
-    private void SetScorePoints(int points)
-    {
-        Score score = GameObject.Find("Score").GetComponent<Score>();
-        score.SetScore(points);
     }
 }

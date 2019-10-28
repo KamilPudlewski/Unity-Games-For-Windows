@@ -151,7 +151,7 @@ MonoBehaviour:
   secondsBeforeSpriteChange: 0.5
   alienBullet: {fileID: 4555716646050099008, guid: 4800b5f787cc28b42abb96955e6af0a6,
     type: 3}
-  minFireRateTime: 2
+  minFireRateTime: 3
   maxFireRateTime: 5
   baseFireWaitTime: 3
   explodedShipImage: {fileID: 8463096131581357343, guid: 1f539275e35f8374396ae96e09118554,

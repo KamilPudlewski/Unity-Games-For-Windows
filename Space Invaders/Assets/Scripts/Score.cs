@@ -5,11 +5,23 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
+    public static Score Instance;
+    public Canvas rootCanvas;
     private Text scoreText;
     private int score;
 
     void Start()
     {
+        rootCanvas = GetComponentInParent<Canvas>();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(rootCanvas);
         scoreText = GetComponent<Text>();
     }
 
@@ -39,5 +51,11 @@ public class Score : MonoBehaviour
     private void DrawScore(string text)
     {
         scoreText.text = text;
+    }
+
+    public void GameOverTextReset()
+    {
+        var gameOver = GameObject.Find("GameOver").GetComponent<Text>();
+        gameOver.text = "";
     }
 }
