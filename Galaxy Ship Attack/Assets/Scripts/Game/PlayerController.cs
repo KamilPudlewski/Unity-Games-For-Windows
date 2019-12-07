@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f;
+    private SettingsManager settingsManager;
 
     public float minY, maxY;
 
@@ -13,12 +13,11 @@ public class PlayerController : MonoBehaviour
     public RuntimeAnimatorController[] spaceshipController;
 
     [SerializeField]
-    private GameObject playerBullet;
+    private GameObject playerBullet = null;
 
     [SerializeField]
-    private Transform attackPoint;
+    private Transform attackPoint = null;
 
-    public float reloadTimer = 0.5f;
     private float currentReloadTimer = 0f;
     private bool canMove = true;
     private bool canAttack = true;
@@ -35,6 +34,7 @@ public class PlayerController : MonoBehaviour
         attackAudio = audioSources[0];
         explosionAudio = audioSources[1];
         anim = GetComponent<Animator>();
+        settingsManager = ScriptableObject.CreateInstance("SettingsManager") as SettingsManager;
         LoadSpaceshipModel();
     }
 
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetAxisRaw("Vertical") > 0f)
             {
                 Vector3 temp = transform.position;
-                temp.y += speed * Time.deltaTime;
+                temp.y += settingsManager.settings.spaceshipSpeed * Time.deltaTime;
 
                 if (temp.y > maxY)
                 {
@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetAxisRaw("Vertical") < 0f)
             {
                 Vector3 temp = transform.position;
-                temp.y -= speed * Time.deltaTime;
+                temp.y -= settingsManager.settings.spaceshipSpeed * Time.deltaTime;
 
                 if (temp.y < minY)
                 {
@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour
             if (canAttack)
             {
                 canAttack = false;
-                currentReloadTimer = reloadTimer;
+                currentReloadTimer = settingsManager.settings.spaceshipReloadTimer;
 
                 Instantiate(playerBullet, attackPoint.position, Quaternion.identity);
                 attackAudio.Play();

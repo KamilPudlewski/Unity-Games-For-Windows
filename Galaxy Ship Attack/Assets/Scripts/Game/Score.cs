@@ -7,6 +7,7 @@ public class Score : MonoBehaviour
     public static Score Instance;
 
     public int score = 0;
+    public int destructionScore = 0;
     private bool countScore = true;
 
     void Start()
@@ -22,6 +23,11 @@ public class Score : MonoBehaviour
         }
     }
 
+    public void AddDestructionPoints(int points)
+    {
+        destructionScore += points;
+    }
+
     public void StopCountScore()
     {
         countScore = false;
@@ -29,6 +35,6 @@ public class Score : MonoBehaviour
 
     public int ReturnScore()
     {
-        return score / 10;
+        return (score / 10) + destructionScore;
     }
 }

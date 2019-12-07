@@ -16,14 +16,20 @@ public class Enemy : MonoBehaviour
     public Transform attackPoint;
     public GameObject bulletPrefab;
 
+    private SettingsManager settingsManager;
+
     private Animator anim;
     private AudioSource explosionSound;
+    private SpriteRenderer spriteRenderer;
 
 
     void Awake()
     {
         anim = GetComponent<Animator>();
         explosionSound = GetComponent<AudioSource>();
+        settingsManager = ScriptableObject.CreateInstance("SettingsManager") as SettingsManager;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        Initialization();
     }
 
     void Start()
@@ -106,10 +112,68 @@ public class Enemy : MonoBehaviour
                 canShoot = false;
                 CancelInvoke("StartShooting");
             }
+            GameObject.Find("Spaceship").GetComponent<PlayerController>().score.AddDestructionPoints(DestructionPoints());
 
             Invoke("DestroyGameOject", 0.5f);
             explosionSound.Play();
             anim.Play("Destroy");
+        }
+    }
+
+    private void Initialization()
+    {
+        if (spriteRenderer.name == "Asteroid 1(Clone)")
+        {
+            speed = settingsManager.settings.asteroid1Speed;
+        }
+        else if (spriteRenderer.name == "Asteroid 2(Clone)")
+        {
+            speed = settingsManager.settings.asteroid2Speed;
+        }
+        else if (spriteRenderer.name == "Asteroid 3(Clone)")
+        {
+            speed = settingsManager.settings.asteroid3Speed;
+        }
+        else if (spriteRenderer.name == "Enemy(Clone)")
+        {
+            speed = settingsManager.settings.ospaceshipSpeed;
+        }
+        else if (spriteRenderer.name == "Tesla(Clone)")
+        {
+            speed = settingsManager.settings.teslaSpeed;
+        }
+        else
+        {
+            Debug.Log("Unknown sprite name: " + spriteRenderer.name);
+        }
+    }
+
+    private int DestructionPoints()
+    {
+        if (spriteRenderer.name == "Asteroid 1(Clone)")
+        {
+            return settingsManager.settings.asteroid1Points;
+        }
+        else if (spriteRenderer.name == "Asteroid 2(Clone)")
+        {
+            return settingsManager.settings.asteroid2Points;
+        }
+        else if (spriteRenderer.name == "Asteroid 3(Clone)")
+        {
+            return settingsManager.settings.asteroid3Points;
+        }
+        else if (spriteRenderer.name == "Enemy(Clone)")
+        {
+            return settingsManager.settings.ospaceshipPoints;
+        }
+        else if (spriteRenderer.name == "Tesla(Clone)")
+        {
+            return settingsManager.settings.teslaPoints;
+        }
+        else
+        {
+            Debug.Log("Unknown sprite name: " + spriteRenderer.name);
+            return 0;
         }
     }
 }
